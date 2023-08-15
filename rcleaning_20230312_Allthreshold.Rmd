@@ -1,0 +1,399 @@
+---
+title: "Cleaning for BIOP_Results"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+date: "2023-02-10"
+---
+Finding for the right path
+```{r}
+#compile data
+library(ggplot2)
+library(ggsignif)
+# install.packages('ggbeeswarm')
+library(ggbeeswarm)
+library(dplyr)
+R2_122 <- read.csv("/Users/jeffrey.liang.mac/Library/CloudStorage/OneDrive-JohnsHopkins/Cai_Lab/Final Graph/H3K9me3_YAP1//biopresult_cleaned_R1_122.csv")
+R2_342 <- read.csv("/Users/jeffrey.liang.mac/Library/CloudStorage/OneDrive-JohnsHopkins/Cai_Lab/Final Graph/H3K9me3_YAP1//biopresult_cleaned_R1_342.csv")
+R2_121 <- read.csv("/Users/jeffrey.liang.mac/Library/CloudStorage/OneDrive-JohnsHopkins/Cai_Lab/Final Graph/H3K9me3_YAP1//biopresult_cleaned_R1_121.csv")
+R2_HK2 <- read.csv("/Users/jeffrey.liang.mac/Library/CloudStorage/OneDrive-JohnsHopkins/Cai_Lab/Final Graph/H3K9me3_YAP1//biopresult_cleaned_R1_HK2.csv")
+R2_HK2$cellline <- "HK2"
+
+cleaned_all <- rbind(R2_121,R2_122, R2_342,R2_HK2)
+```
+
+```{r}
+#thresholds for 122
+library(dplyr)
+cleaned <- filter(cleaned_all,cellline=="UOK122")
+m1 <- data.frame(cleaned$type,cleaned$Thresholded_M1,"M1",cleaned$threshold)
+m2 <- data.frame(cleaned$type,cleaned$Thresholded_M2,"M2",cleaned$threshold)
+colnames(m1)[3] ="Manders"
+colnames(m2)[3] ="Manders"
+colnames(m1)[2] ="Value"
+colnames(m2)[2] ="Value"
+plot <- rbind(m1,m2)
+plot$cleaned.type <- paste0(plot$cleaned.type,"_",plot$Manders)
+plot$Value <- as.numeric(plot$Value)
+
+library(ggplot2)
+library(ggsignif)
+# install.packages('ggbeeswarm')
+library(ggbeeswarm)
+library(ggpubr)
+p1 <- ggplot(data = plot, aes(x =cleaned.threshold, y = Value,color = cleaned.type)) +
+  ggbeeswarm::geom_quasirandom(shape = 16,size=1, dodge.width = .75)+
+  # stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", width=0.8, color=cbbPalette)+
+  stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", position = position_dodge(width = 0.8), width=0.8)+
+  theme_classic()+
+  scale_color_manual(values = c("#19AADE","#AF48CE","#19AADE","#AF48CE"))+
+  theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1))
+p2 <- ggplot(data = plot, aes(x =cleaned.threshold, y = Value,fill = cleaned.type)) +
+geom_boxplot()+
+
+ylim(0,1)+
+labs(title="All Channal analysis for UOK122")+
+# scale_x_discrete(limits=c("H3K9me3_M1","Control_M1","H3K9me3_M2","Control_M2"))+
+theme_minimal()+
+theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=0.6))
+threshold_plot_122 <- ggarrange(p1,p2,ncol = 1, nrow = 2)
+
+
+```
+
+```{r}
+#thresholds for 342
+library(dplyr)
+cleaned <- filter(cleaned_all,cellline=="UOK342")
+m1 <- data.frame(cleaned$type,cleaned$Thresholded_M1,"M1",cleaned$threshold)
+m2 <- data.frame(cleaned$type,cleaned$Thresholded_M2,"M2",cleaned$threshold)
+colnames(m1)[3] ="Manders"
+colnames(m2)[3] ="Manders"
+colnames(m1)[2] ="Value"
+colnames(m2)[2] ="Value"
+plot <- rbind(m1,m2)
+plot$cleaned.type <- paste0(plot$cleaned.type,"_",plot$Manders)
+plot$Value <- as.numeric(plot$Value)
+
+library(ggplot2)
+library(ggsignif)
+# install.packages('ggbeeswarm')
+library(ggbeeswarm)
+library(ggpubr)
+p1 <- ggplot(data = plot, aes(x =cleaned.threshold, y = Value,color = cleaned.type)) +
+  ggbeeswarm::geom_quasirandom(shape = 16,size=1, dodge.width = .75)+
+  # stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", width=0.8, color=cbbPalette)+
+  stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", position = position_dodge(width = 0.8), width=0.8)+
+  theme_classic()+
+  scale_color_manual(values = c("#19AADE","#AF48CE","#19AADE","#AF48CE"))+
+  theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1))
+p2 <- ggplot(data = plot, aes(x =cleaned.threshold, y = Value,fill = cleaned.type)) +
+geom_boxplot()+
+
+ylim(0,1)+
+labs(title="All Channal analysis for UOK342")+
+# scale_x_discrete(limits=c("H3K9me3_M1","Control_M1","H3K9me3_M2","Control_M2"))+
+theme_minimal()+
+theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=0.6))
+threshold_plot_342 <- ggarrange(p1,p2,ncol = 1, nrow = 2)
+threshold_plot_342
+```
+```{r}
+#thresholds for 342
+library(dplyr)
+cleaned <- filter(cleaned_all,cellline=="UOK121")
+m1 <- data.frame(cleaned$type,cleaned$Thresholded_M1,"M1",cleaned$threshold)
+m2 <- data.frame(cleaned$type,cleaned$Thresholded_M2,"M2",cleaned$threshold)
+colnames(m1)[3] ="Manders"
+colnames(m2)[3] ="Manders"
+colnames(m1)[2] ="Value"
+colnames(m2)[2] ="Value"
+plot <- rbind(m1,m2)
+plot$cleaned.type <- paste0(plot$cleaned.type,"_",plot$Manders)
+plot$Value <- as.numeric(plot$Value)
+
+library(ggplot2)
+library(ggsignif)
+# install.packages('ggbeeswarm')
+library(ggbeeswarm)
+library(ggpubr)
+p1 <- ggplot(data = plot, aes(x =cleaned.threshold, y = Value,color = cleaned.type)) +
+  ggbeeswarm::geom_quasirandom(shape = 16,size=1, dodge.width = .75)+
+  # stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", width=0.8, color=cbbPalette)+
+  stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", position = position_dodge(width = 0.8), width=0.8)+
+  theme_classic()+
+  scale_color_manual(values = c("#19AADE","#AF48CE","#19AADE","#AF48CE"))+
+  theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1))
+p2 <- ggplot(data = plot, aes(x =cleaned.threshold, y = Value,fill = cleaned.type)) +
+geom_boxplot()+
+
+ylim(0,1)+
+labs(title="All Channal analysis for UOK121")+
+# scale_x_discrete(limits=c("H3K9me3_M1","Control_M1","H3K9me3_M2","Control_M2"))+
+theme_minimal()+
+theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=0.6))
+threshold_plot_121 <- ggarrange(p1,p2,ncol = 1, nrow = 2)
+threshold_plot_121
+```
+```{r}
+#thresholds for 342
+library(dplyr)
+cleaned <- filter(cleaned_all,cellline=="HK2")
+m1 <- data.frame(cleaned$type,cleaned$Thresholded_M1,"M1",cleaned$threshold)
+m2 <- data.frame(cleaned$type,cleaned$Thresholded_M2,"M2",cleaned$threshold)
+colnames(m1)[3] ="Manders"
+colnames(m2)[3] ="Manders"
+colnames(m1)[2] ="Value"
+colnames(m2)[2] ="Value"
+plot <- rbind(m1,m2)
+plot$cleaned.type <- paste0(plot$cleaned.type,"_",plot$Manders)
+plot$Value <- as.numeric(plot$Value)
+
+library(ggplot2)
+library(ggsignif)
+# install.packages('ggbeeswarm')
+library(ggbeeswarm)
+library(ggpubr)
+p1 <- ggplot(data = plot, aes(x =cleaned.threshold, y = Value,color = cleaned.type)) +
+  ggbeeswarm::geom_quasirandom(shape = 16,size=1, dodge.width = .75)+
+  # stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", width=0.8, color=cbbPalette)+
+  stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", position = position_dodge(width = 0.8), width=0.8)+
+  theme_classic()+
+  scale_color_manual(values = c("#19AADE","#AF48CE","#19AADE","#AF48CE"))+
+  theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1))
+p2 <- ggplot(data = plot, aes(x =cleaned.threshold, y = Value,fill = cleaned.type)) +
+geom_boxplot()+
+
+ylim(0,1)+
+labs(title="All Channal analysis for HK2")+
+# scale_x_discrete(limits=c("H3K9me3_M1","Control_M1","H3K9me3_M2","Control_M2"))+
+theme_minimal()+
+theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=0.6))
+threshold_plot_HK2 <- ggarrange(p1,p2,ncol = 1, nrow = 2)
+threshold_plot_HK2
+```   
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(rstatix)
+cleaned_ME <- filter(cleaned_all,threshold=="MaxEntropy")
+#M1 column
+cleaned_final <- rbind(as.data.frame(cbind(cleaned_ME$type,cleaned_ME$cellline,cleaned_ME$Thresholded_M1,"M1")),as.data.frame(cbind(cleaned_ME$type,cleaned_ME$cellline,cleaned_ME$Thresholded_M2,"M2")))
+cleaned_final <- as.data.frame(cbind(cleaned_final,c("1")))
+i=1
+while (i<=nrow(cleaned_final)){
+  
+  if (cleaned_final$V1[i]=="H3K9me3")
+  {
+    cleaned_final$V1[i]<-"Foci"
+  }
+  i <- i+1
+}
+cleaned_final <- mutate(cleaned_final,paste0(V2,"_",V1,"_",V4))
+colnames(cleaned_final)[6] <- "Type"
+cleaned_final <- mutate(cleaned_final,paste0(V2,"_",V1,"_",V4))
+colnames(cleaned_final)[7] <- "Group"
+colnames(cleaned_final)[3] <- "Value"
+cleaned_final$Group <- str_replace_all(cleaned_final$Group, c("HK2_Control_M1" ="HK2_Foci_M1",
+                                                        "HK2_Control_M2"="HK2_Foci_M2",
+                                                        "UOK121_Control_M1"="UOK121_Foci_M1",
+                                                        "UOK121_Control_M2"="UOK121_Foci_M2",
+                                                        "UOK122_Control_M1"="UOK122_Foci_M1",
+                                                        "UOK122_Control_M2"="UOK122_Foci_M2",
+                                                        "UOK342_Control_M1"="UOK342_Foci_M1",
+                                                        "UOK342_Control_M2"="UOK342_Foci_M2"))
+
+cleaned_final$Value <- as.numeric(cleaned_final$Value)
+stat.test <- cleaned_final %>%
+  group_by(Group) %>%
+  t_test(Value ~ Type,conf.level = 0.95) %>%
+  adjust_pvalue(method = "bonferroni") %>%
+  add_significance()
+stat.test
+
+
+``` 
+
+```{r}
+library(ggplot2)
+library(ggsignif)
+# install.packages('ggbeeswarm')
+library(ggbeeswarm)
+cbbPalette = c("#000000","#000000", "#E69F00","#E69F00", "#56B4E9","#56B4E9", "#009E73","#009E73", "#F0E442","#F0E442", "#0072B2","#0072B2", "#D55E00","#D55E00", "#CC79A7","#CC79A7")
+
+cleaned_final$Type <- factor(cleaned_final$Type,levels = c("HK2_Foci_M1","HK2_Control_M1","HK2_Foci_M2","HK2_Control_M2",
+                            "UOK121_Foci_M1","UOK121_Control_M1","UOK121_Foci_M2","UOK121_Control_M2",
+                            "UOK122_Foci_M1","UOK122_Control_M1","UOK122_Foci_M2","UOK122_Control_M2",
+                            "UOK342_Foci_M1","UOK342_Control_M1","UOK342_Foci_M2","UOK342_Control_M2"))
+stat.test <- stat.test %>% add_xy_position(x="Group")
+# p<- ggplot(cleaned_final, aes(x = Type, y = Value,color = Group)) + 
+#   ggbeeswarm::geom_quasirandom(shape = 16,size=1.5, dodge.width = .75)+
+#   # stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", width=0.8, color=cbbPalette)+
+#   stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", width=0.8)+
+#   theme_classic()+
+#   scale_color_manual(values = c("#19AADE","#AF48CE","#19AADE","#AF48CE"))+
+#   theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1))+
+#   theme(legend.position = "none")+   ylim(0,1)+
+#   stat_pvalue_manual(stat.test, label = "p.adj.signif",xmin = "group2",xmax = "group1")+
+#   labs(title = "TEAD4/H3K9me3 Colocalization")
+  
+  # geom_signif(comparisons = list(c("HK2_Foci_M1","HK2_Control_M1")), map_signif_level = FALSE, annotations = c("****"))+
+  # geom_signif(comparisons = list(c("HK2_Foci_M2","HK2_Control_M2")), map_signif_level = TRUE, annotations = c("**"))+
+  # geom_signif(comparisons = list(c("UOK121_Foci_M1","UOK121_Control_M1")), map_signif_level = TRUE, annotations = c("****"))+
+  # geom_signif(comparisons = list(c("UOK121_Foci_M2","UOK121_Control_M2")), map_signif_level = TRUE, annotations = c("****"))+
+  # geom_signif(comparisons = list(c("UOK122_Foci_M1","UOK122_Control_M1")), map_signif_level = TRUE, annotations = c("*"))+
+  # geom_signif(comparisons = list(c("UOK122_Foci_M2","UOK122_Control_M2")), map_signif_level = TRUE, annotations = c("****"))+
+  # geom_signif(comparisons = list(c("UOK342_Foci_M1","UOK342_Control_M1")), map_signif_level = TRUE, annotations = c("****"))+
+  # geom_signif(comparisons = list(c("UOK342_Foci_M2","UOK342_Control_M2")), map_signif_level = TRUE, annotations = c("****"))
+# p
+
+```
+
+```{r}
+#HK2 plot
+plot <- cleaned_final %>%
+  filter(V2=="HK2") %>%
+  mutate(paste0("H3K9me3","_",V1,"_",V4))
+colnames(plot)[8] <- "plotgroup"
+
+
+plot$plotgroup <- factor(plot$plotgroup,levels = c("H3K9me3_Foci_M1","H3K9me3_Control_M1","H3K9me3_Foci_M2","H3K9me3_Control_M2"))
+plot$Value <- as.numeric(plot$Value)
+
+stat.test <- plot %>%
+  group_by(Group) %>%
+  t_test(Value ~ plotgroup,conf.level = 0.95) %>%
+  adjust_pvalue(method = "bonferroni") %>%
+  add_significance() %>% 
+  add_xy_position(x="Group")
+
+stat.test
+
+p_HK2 <- ggplot(plot, aes(x = plotgroup, y = Value,color = Group)) + 
+  ggbeeswarm::geom_quasirandom(shape = 16,size=1.5, dodge.width = .75)+
+  # stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", width=0.8, color=cbbPalette)+
+  stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", width=0.8)+
+  theme_classic()+
+  scale_color_manual(values = c("#19AADE","#AF48CE","#19AADE","#AF48CE"))+
+  theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1))+
+  theme(legend.position = "none")+   ylim(0,1)+
+  stat_pvalue_manual(stat.test, label = "p.adj.signif",xmin = "group2",xmax = "group1")+
+  labs(title = "YAP1/H3K9me3 Colocalization in HK2")+
+  theme(axis.title.x = element_blank())
+p_HK2
+```
+
+```{r}
+#122 plot
+plot <- cleaned_final %>%
+  filter(V2=="UOK122") %>%
+  mutate(paste0("H3K9me3","_",V1,"_",V4))
+colnames(plot)[8] <- "plotgroup"
+
+
+plot$plotgroup <- factor(plot$plotgroup,levels = c("H3K9me3_Foci_M1","H3K9me3_Control_M1","H3K9me3_Foci_M2","H3K9me3_Control_M2"))
+plot$Value <- as.numeric(plot$Value)
+
+stat.test <- plot %>%
+  group_by(Group) %>%
+  t_test(Value ~ plotgroup,conf.level = 0.95) %>%
+  adjust_pvalue(method = "bonferroni") %>%
+  add_significance() %>% 
+  add_xy_position(x="Group")
+
+stat.test
+
+p_122 <- ggplot(plot, aes(x = plotgroup, y = Value,color = Group)) + 
+  ggbeeswarm::geom_quasirandom(shape = 16,size=1.5, dodge.width = .75)+
+  # stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", width=0.8, color=cbbPalette)+
+  stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", width=0.8)+
+  theme_classic()+
+  scale_color_manual(values = c("#19AADE","#AF48CE","#19AADE","#AF48CE"))+
+  theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1))+
+  theme(legend.position = "none")+   ylim(0,1)+
+  stat_pvalue_manual(stat.test, label = "p.adj.signif",xmin = "group2",xmax = "group1")+
+  labs(title = "YAP1/H3K9me3 Colocalization in UOK122")+
+  theme(axis.title.x = element_blank())+
+  theme(plot.title = element_text(hjust = 0))
+p_122
+```
+
+```{r}
+#121 plot
+plot <- cleaned_final %>%
+  filter(V2=="UOK121") %>%
+  mutate(paste0("TEAD1","_",V1,"_",V4))
+colnames(plot)[8] <- "plotgroup"
+
+
+plot$plotgroup <- factor(plot$plotgroup,levels = c("TEAD1_Foci_M1","TEAD1_Control_M1","TEAD1_Foci_M2","TEAD1_Control_M2"))
+plot$Value <- as.numeric(plot$Value)
+
+stat.test <- plot %>%
+  group_by(Group) %>%
+  t_test(Value ~ plotgroup,conf.level = 0.95) %>%
+  adjust_pvalue(method = "bonferroni") %>%
+  add_significance() %>% 
+  add_xy_position(x="Group")
+
+stat.test
+
+p_121 <- ggplot(plot, aes(x = plotgroup, y = Value,color = Group)) + 
+  ggbeeswarm::geom_quasirandom(shape = 16,size=1.5, dodge.width = .75)+
+  # stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", width=0.8, color=cbbPalette)+
+  stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", width=0.8)+
+  theme_classic()+
+  scale_color_manual(values = c("#19AADE","#AF48CE","#19AADE","#AF48CE"))+
+  theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1))+
+  theme(legend.position = "none")+   ylim(0,1)+
+  stat_pvalue_manual(stat.test, label = "p.adj.signif",xmin = "group2",xmax = "group1")+
+  labs(title = "YAP1/H3K9me3 Colocalization in UOK121")+
+  theme(axis.title.x = element_blank())+
+  theme(plot.title = element_text(hjust = 0))
+
+p_121
+```
+
+```{r}
+#342 plot
+plot <- cleaned_final %>%
+  filter(V2=="UOK342") %>%
+  mutate(paste0("TEAD1","_",V1,"_",V4))
+colnames(plot)[8] <- "plotgroup"
+
+
+plot$plotgroup <- factor(plot$plotgroup,levels = c("TEAD1_Foci_M1","TEAD1_Control_M1","TEAD1_Foci_M2","TEAD1_Control_M2"))
+plot$Value <- as.numeric(plot$Value)
+
+stat.test <- plot %>%
+  group_by(Group) %>%
+  t_test(Value ~ plotgroup,conf.level = 0.95) %>%
+  adjust_pvalue(method = "bonferroni") %>%
+  add_significance() %>% 
+  add_xy_position(x="Group")
+
+stat.test
+
+p_342 <- ggplot(plot, aes(x = plotgroup, y = Value,color = Group)) + 
+  ggbeeswarm::geom_quasirandom(shape = 16,size=1.5, dodge.width = .75)+
+  # stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", width=0.8, color=cbbPalette)+
+  stat_summary(fun= mean, fun.min=mean, fun.max=mean, geom="crossbar", width=0.8)+
+  theme_classic()+
+  scale_color_manual(values = c("#19AADE","#AF48CE","#19AADE","#AF48CE"))+
+  theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1))+
+  theme(legend.position = "none")+   ylim(0,1)+
+  ylim(0,1)+
+  stat_pvalue_manual(stat.test, label = "p.adj.signif",xmin = "group2",xmax = "group1")+
+  labs(title = "YAP1/H3K9me3 Colocalization in UOK342")+
+  theme(axis.title.x = element_blank())+
+  theme(plot.title = element_text(hjust = 0))
+p_342
+```
+
+```{r}
+p <- ggarrange(p_121,p_342,p_342,p_HK2,nrow=4,ncol=1)
+ggsave(file="test.svg", plot=p, width=312, height=1000,units = "px",dpi = 100)
+
+```
