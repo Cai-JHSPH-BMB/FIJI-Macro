@@ -1,10 +1,10 @@
 # Using BIOP-JACoP to do Co-localization in a certain ROI.
 
-Here's the explaination for each chuck and can be further customized. 
+Here's the explanation for each chuck which can be further customized. 
 
 ### First step: Preparation
 
-Prepare for the directionary, path, and file names for later references:
+Prepare for the directory, path, and file names for later references:
 
 ```java
 title = getTitle();
@@ -21,14 +21,14 @@ if (roicount!= 0){
 }
 ```
 
-note: make sure that you have processed folder in your folder so that the ouput is not too messy. You can also just use `path = dic` if you don't want subfolder. 
+note: make sure that you have a processed folder in your folder so that the output is not too messy. You can use `path = dic` if you don't want a subfolder. 
 
-### Second Step: Organize Channel
+### Second Step: Look for your ROI of interested
 
-In one channel; you can specific which channel goes first, duplicate, Gaussian Blur, Analyze Particles, count the ROI manager. As a quality control, if there's no output, have "0" as the output. Reset for another repeat. 
+The following code is an automatic process that looks for foci in the image. In one channel; you can specify which channel goes first, duplicate, Gaussian Blur, Analyze Particles, and count the ROI manager. As a quality control, if there's no output, have "0" as the output. ROI will be reset before another repeat
 
 ```java
-// ROI based localization analysis, this cannel will reset
+//ROI-based localization analysis, this channel will reset
 run("Duplicate...", "duplicate channels=2");
 resetMinAndMax;
 run("Duplicate...", "duplicate channels=2");
@@ -82,9 +82,9 @@ run("Read and Write Excel", "stack_results" );
 run("Close");
 selectWindow("Summary");
 run("Close");
-
-
 ```
+Note here is if you want to proceed to do colocalization of two channels, you first need to determine which ROI if interested you are looking at. For example, if the green channel is what I'm interested in, you first measure in the red channel, and reset, and then measure in green channel. THis would make sure that only the green channel ROI is there. If you want to have both, you can delete the reset ROImanager function. 
+
 
 ## Step Three: Rename ROI -- this is important if you want to output your data to excel: 
 
