@@ -14,6 +14,7 @@ path= dic + "/processed/"
 foci = "H3K9me3"
 setForegroundColor(252, 252, 252);
 setBackgroundColor(252, 252, 252);
+//clear old saved roi positions
 roicount = roiManager("count");
 if (roicount!= 0){
 	roiManager("delete");
