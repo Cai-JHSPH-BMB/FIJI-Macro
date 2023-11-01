@@ -2,7 +2,9 @@
 
 Here's the explaination for each chuck and can be further customized. 
 
-## First step: Prepare for the directionary, path, and file names for later references:
+### First step: Preparation
+
+Prepare for the directionary, path, and file names for later references:
 
 ```java
 title = getTitle();
@@ -20,7 +22,9 @@ if (roicount!= 0){
 
 note: make sure that you have processed folder in your folder so that the ouput is not too messy. You can also just use `path = dic` if you don't want subfolder. 
 
-## Second Step: In one channel; you can specific which channel goes first, duplicate, Gaussian Blur, Analyze Particles, count the ROI manager. As a quality control, if there's no output, have "0" as the output. Reset for another repeat. 
+### Second Step: Organize Channel
+
+In one channel; you can specific which channel goes first, duplicate, Gaussian Blur, Analyze Particles, count the ROI manager. As a quality control, if there's no output, have "0" as the output. Reset for another repeat. 
 
 ```java
 // ROI based localization analysis, this cannel will reset
@@ -92,7 +96,9 @@ for (i = 0; i < roiManager("count"); i++) {
 }
 ```
 
-## Step Four: As a quality control, you can see how your threshold and your foci calling algorithm is good enough for further analysis. This step simply output a montage image of the thresholding. 
+### Step Four: Visualization
+
+As a quality control, you can see how your threshold and your foci calling algorithm is good enough for further analysis. This step simply output a montage image of the thresholding. 
 
 ```java
 //stack and montage
@@ -109,7 +115,7 @@ selectWindow("Summary");
 run("Close");
 ```
 
-## Step Five: Run BIOP-JACoP for analysis, and save output. 
+### Step Five: Run BIOP-JACoP for analysis, and save output. 
 
 ```java
 
