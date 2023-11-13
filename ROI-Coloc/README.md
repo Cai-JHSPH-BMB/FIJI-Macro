@@ -83,6 +83,9 @@ run("Close");
 selectWindow("Summary");
 run("Close");
 ```
+
+Here's the algorithm for ROI: 
+![alt text](https://github.com/Cai-JHSPH-BMB/FIJI-Macro/blob/main/ROI-Coloc/ROI.png)
 Note here is if you want to proceed to do colocalization of two channels, you first need to determine which ROI if interested you are looking at. For example, if the green channel is what I'm interested in, you first measure in the red channel, and reset, and then measure in green channel. THis would make sure that only the green channel ROI is there. If you want to have both, you can delete the reset ROImanager function. 
 
 
