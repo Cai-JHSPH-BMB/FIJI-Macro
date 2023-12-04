@@ -4,7 +4,7 @@ First download the newest dotted line plugin: https://imagej.net/ij/plugins/dott
 
 Simple dotted line macro: `dottedline.ijm`
 
-Dotted line macro in two channels and two ROI zoom up:  'plotimage.ijm'
+Dotted line macro in two channels and two ROI zoom up:  `plotimage.ijm`
 
 'plotimage.ijm' For final presentation: 
 
